@@ -13,7 +13,8 @@ print(f"Module Version: {mt5.__version__}\n")
 
 #_________________Creating Data structures_________________#
 """Forex & Commodity list is required by real_volume() method
-    list1 consists of asset names & their Dollar conversion"""
+    list1 consists of asset names & their Dollar conversion
+    required to calculat P/L."""
 
 forex = ['EUR', 'GBP', 'AUD', 'NZD', 'USD', 'CHF', 'CAD', 'SGD', 'NOK', 'SEK']                                    #Required to calculate volume
 
@@ -399,7 +400,7 @@ class Order():
 
         return lev
 
-    def type_(self):
+    def _type(self):
         """Sets the order type of order for calculating profit"""
 
         if self.pending_orders[0].type in [0, 2, 4, 6]:
@@ -414,7 +415,7 @@ class Order():
     def capital_risk(self, account: Account) -> None:
         """Returns the $ amount lost if SL is hit"""
 
-        risk = mt5.order_calc_profit(self.type_(), self.symbol, self.volume, self.entry, self.stop_loss)
+        risk = mt5.order_calc_profit(self._type(), self.symbol, self.volume, self.entry, self.stop_loss)
 
         if risk is None:
             return -(account.equity)
@@ -424,7 +425,7 @@ class Order():
     def capital_target(self, account: Account) -> None:
         """Returns the $ amount that will be received if TP is hit"""
 
-        target = mt5.order_calc_profit(self.type_(), self.symbol, self.volume, self.entry, self.take_profit)
+        target = mt5.order_calc_profit(self._type(), self.symbol, self.volume, self.entry, self.take_profit)
 
         if target is None:
             return account.equity
@@ -463,13 +464,13 @@ class Order():
     def margin(self):
         """Returns the required margin in $ to take that position."""
 
-        rMargin = mt5.order_calc_margin(self.type_(), self.symbol, self.volume, self.entry)
+        rMargin = mt5.order_calc_margin(self._type(), self.symbol, self.volume, self.entry)
 
         return rMargin
 
     def expiry(self):
         """Returns the expiry date of the order if it has any,
-        else returns 'GTC' for Good Till Cancel."""
+            else returns 'GTC' for Good Till Cancel."""
 
         stamp = self.pending_orders[0].time_expiration
         if stamp == 0:
