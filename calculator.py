@@ -20,19 +20,43 @@ forex = ['EUR', 'GBP', 'AUD', 'NZD', 'USD', 'CHF', 'CAD', 'SGD', 'NOK', 'SEK']  
 
 commodity = ['XAU', 'XPD', 'XPT', 'XNG', 'XTI', 'XBR', 'DXY']                                                     #Required to calculate volume
 
-list1 = {'GBPAUD': 'AUDUSD', 'EURAUD': 'AUDUSD', 'AUDNZD': 'NZDUSD', 'GBPNZD': 'NZDUSD', 'EURNZD': 'NZDUSD',
-        'EURGBP': 'GBPUSD', 'GBPCHF': 'USDCHF', 'EURCHF': 'USDCHF', 'AUDCHF': 'USDCHF', 'CADCHF': 'USDCHF',
-        'NZDCHF': 'USDCHF', 'GBPJPY': 'USDJPY', 'CHFJPY': 'USDJPY', 'EURJPY': 'USDJPY', 'AUDJPY': 'USDJPY',
-        'CADJPY': 'USDJPY', 'NZDJPY': 'USDJPY', 'SGDJPY': 'USDJPY', 'NOKJPY': 'USDJPY', 'SEKJPY': 'USDJPY',
-        'GBPCAD': 'USDCAD', 'EURCAD': 'USDCAD', 'AUDCAD': 'USDCAD', 'NZDCAD': 'USDCAD', 'GBPSGD': 'USDSGD',
-        'CHFSGD': 'USDSGD', 'EURSGD': 'USDSGD', 'AUDSGD': 'USDSGD', 'GBPNOK': 'USDNOK', 'EURNOK': 'USDNOK',
-        'GBPSEK': 'GBPSEK', 'EURSEK': 'GBPSEK', 'NOKSEK': 'GBPSEK', 'GBPTRY': 'USDTRY', 'EURTRY': 'USDTRY',
-        'EURZAR': 'USDZAR', 'GBPDKK': 'USDDKK', 'EURDKK': 'USDDKK', 'EURHKD': 'USDHKD', 'EURPLN': 'USDPLN',
-        'XAUEUR': 'EURUSD', 'XAUAUD': 'AUDUSD', 'XAGEUR': 'EURUSD', 'AUS200': 'AUDUSD', 'UK100': 'GBPUSD',
-        'JP225': 'USDJPY', 'DE30': 'EURUSD', 'STOXX50': 'EURUSD', 'F40': 'EURUSD', 'ES35': 'EURUSD',
-        'IT50': 'EURUSD', 'HK50': 'USDHKD'}                                                                        #Required to adjust in USD
+# list1 = {'GBPAUD': 'AUDUSD', 'EURAUD': 'AUDUSD', 'AUDNZD': 'NZDUSD', 'GBPNZD': 'NZDUSD', 'EURNZD': 'NZDUSD',
+#         'EURGBP': 'GBPUSD', 'GBPCHF': 'USDCHF', 'EURCHF': 'USDCHF', 'AUDCHF': 'USDCHF', 'CADCHF': 'USDCHF',
+#         'NZDCHF': 'USDCHF', 'GBPJPY': 'USDJPY', 'CHFJPY': 'USDJPY', 'EURJPY': 'USDJPY', 'AUDJPY': 'USDJPY',
+#         'CADJPY': 'USDJPY', 'NZDJPY': 'USDJPY', 'SGDJPY': 'USDJPY', 'NOKJPY': 'USDJPY', 'SEKJPY': 'USDJPY',
+#         'GBPCAD': 'USDCAD', 'EURCAD': 'USDCAD', 'AUDCAD': 'USDCAD', 'NZDCAD': 'USDCAD', 'GBPSGD': 'USDSGD',
+#         'CHFSGD': 'USDSGD', 'EURSGD': 'USDSGD', 'AUDSGD': 'USDSGD', 'GBPNOK': 'USDNOK', 'EURNOK': 'USDNOK',
+#         'GBPSEK': 'GBPSEK', 'EURSEK': 'GBPSEK', 'NOKSEK': 'GBPSEK', 'GBPTRY': 'USDTRY', 'EURTRY': 'USDTRY',
+#         'EURZAR': 'USDZAR', 'GBPDKK': 'USDDKK', 'EURDKK': 'USDDKK', 'EURHKD': 'USDHKD', 'EURPLN': 'USDPLN',
+#         'XAUEUR': 'EURUSD', 'XAUAUD': 'AUDUSD', 'XAGEUR': 'EURUSD', 'AUS200': 'AUDUSD', 'UK100': 'GBPUSD',
+#         'JP225': 'USDJPY', 'DE30': 'EURUSD', 'STOXX50': 'EURUSD', 'F40': 'EURUSD', 'ES35': 'EURUSD',
+#         'IT50': 'EURUSD', 'HK50': 'USDHKD'}                                                                        #Required to adjust in USD
 
 mt5.initialize()                                                                                                  #Connecting to MT5
+
+#_________Creating Denomination Dictionary___________#
+def pair_generator(symbol):
+    """Takes the asset name and gives the USD converting forex pair
+        ie. for GBPAUD it will return AUDUSD"""
+
+    if symbol in ['EUR', 'GBP', 'AUD', 'NZD']:
+        return f'{symbol}USD'
+    else:
+        return f'USD{symbol}'
+
+allinfo = mt5.symbols_get()
+
+templist = list()
+for info in allinfo:
+    if info.currency_profit == 'USD' or info.currency_margin == 'USD':
+        continue
+    else:
+        templist.append((info.name, info.currency_profit))
+
+list1 = dict()
+for i in templist:
+    list1[i[0]] = pair_generator(i[1])
+
 
 class Account():
     """Gives real-time details of the account that is currently logged in the MT5 terminal"""
