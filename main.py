@@ -13,6 +13,7 @@ portfolioSheet = book.sheets('Portfolio')
 
 while True:
 
+    #____________Portfolio Sheet_____________#
     my_account = ca.Account()
 
     portfolioSheet.cells(2, 'B').value = my_account.name
@@ -25,6 +26,8 @@ while True:
     portfolioSheet.cells(9, 'B').value = my_account.balance
     portfolioSheet.cells(10, 'B').value = my_account.profit
     
+
+    #____________Position Sheet________________#
     allPositions = mt5.positions_get()
 
     assets = set()
@@ -63,8 +66,8 @@ while True:
             assets.remove(symbol)
             break
     
-    time.sleep(2)
 
+    #_____________Orders Sheet___________________#
     allOrders = mt5.orders_get()
 
     tickets = set()
