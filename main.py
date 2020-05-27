@@ -5,6 +5,52 @@ import time
 
 mt5.initialize()
 
+def asset_class_exposure(positions: set):
+    '''Takes a set of positions from same asset-class and returns
+    the total exposure of all the positions, giving the total
+    exposure on the asset-class.
+    
+    attr:
+        position[set]: set of assets with open positions.'''
+
+    class_exposure = 0
+    if len(positions) > 0:
+        for position in positions:
+            trade = ca.Position(position)
+            class_exposure += trade.adjusted_exposure()
+        
+    return class_exposure
+
+
+#________Making asset class lists________#
+forexList = list()
+commoditiesList = list()
+indexList = list()
+bondsList = list()
+equitiesList = list()
+etfList = list()
+
+#Getting all symbols in the terminal
+allInfo = mt5.symbols_get()
+
+#Segrigating symbols w.r.t their asset-class
+for info in allInfo:
+    if 'Forex' in info.path:
+        forexList.append(info.name)
+    elif 'Commodities' in info.path:
+        commoditiesList.append(info.name)
+    elif 'Indices' in info.path:
+        indexList.append(info.name)
+    elif 'Bonds' in info.path:
+        bondsList.append(info.name)
+    elif 'ETF' in info.path:
+        etfList.append(info.name)
+    elif 'Stock' in info.path:
+        equitiesList.append(info.name)
+    else:
+        continue
+
+#__________Assigning spreadsheet_________#
 book = xl.Book('Book1.xlsx')
 
 positionSheet = book.sheets('Positions')
@@ -66,6 +112,45 @@ while True:
             assets.remove(symbol)
             break
     
+    #___________________Asset-class Exposures______________________#
+    #Creating asset-class sets
+    fxPositions = set()
+    comPositions = set()
+    indexPositions = set()
+    bondPositions = set()
+    equityPositions = set()
+    etfPositions = set()
+
+    #Segrigating Positions into their asset-classes
+    for position in allPositions:
+        if position.symbol in forexList:
+            fxPositions.add(position.symbol)
+        elif position.symbol in commoditiesList:
+            comPositions.add(position.symbol)
+        elif position.symbol in indexList:
+            indexPositions.add(position.symbol)
+        elif position.symbol in bondsList:
+            bondPositions.add(position.symbol)
+        elif position.symbol in etfList:
+            etfPositions.add(position.symbol)
+        else:
+            equityPositions.add(position.symbol)
+
+    #Getting the exposures of each asset-class
+    fxExposure = asset_class_exposure(fxPositions)
+    comExposure = asset_class_exposure(comPositions)
+    indexExposure = asset_class_exposure(indexPositions)
+    equityExposure = asset_class_exposure(equityPositions)
+    etfExposure = asset_class_exposure(etfPositions)
+    bondExposure = asset_class_exposure(bondPositions)
+
+    #Pushing exposures into spreadsheet
+    portfolioSheet.cells(16, 'B').value = fxExposure
+    portfolioSheet.cells(17, 'B').value = comExposure
+    portfolioSheet.cells(18, 'B').value = indexExposure
+    portfolioSheet.cells(19, 'B').value = equityExposure
+    portfolioSheet.cells(20, 'B').value = etfExposure
+    portfolioSheet.cells(21, 'B').value = bondExposure
 
     #_____________Orders Sheet___________________#
     allOrders = mt5.orders_get()
@@ -103,6 +188,6 @@ while True:
             tickets.remove(ticket)
             break
     
-    time.sleep(55)
+    time.sleep(10)
 
 mt5.shutdown()
