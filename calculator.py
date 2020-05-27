@@ -9,7 +9,7 @@ import datetime as dt
 import time
 
 print(f"Author: {mt5.__author__}")
-print(f"Module Version: {mt5.__version__}\n")
+print(f"Module Version: {mt5.__version__}")
 
 #_________________Creating Data structures_________________#
 """Forex & Commodity list is required by real_volume() method
@@ -30,11 +30,12 @@ commodity = ['XAU', 'XPD', 'XPT', 'XNG', 'XTI', 'XBR', 'DXY']                   
 #         'EURZAR': 'USDZAR', 'GBPDKK': 'USDDKK', 'EURDKK': 'USDDKK', 'EURHKD': 'USDHKD', 'EURPLN': 'USDPLN',
 #         'XAUEUR': 'EURUSD', 'XAUAUD': 'AUDUSD', 'XAGEUR': 'EURUSD', 'AUS200': 'AUDUSD', 'UK100': 'GBPUSD',
 #         'JP225': 'USDJPY', 'DE30': 'EURUSD', 'STOXX50': 'EURUSD', 'F40': 'EURUSD', 'ES35': 'EURUSD',
-#         'IT50': 'EURUSD', 'HK50': 'USDHKD'}                                                                        #Required to adjust in USD
+#         'IT50': 'EURUSD', 'HK50': 'USDHKD'}
 
-mt5.initialize()                                                                                                  #Connecting to MT5
+mt5.initialize()             #Connecting to MT5
+print(f"Terminal Build: {mt5.terminal_info().build}\n")
 
-#_________Creating Denomination Dictionary___________#
+#__________________Creating Denomination Dictionary_____________________#
 def pair_generator(symbol):
     """Takes the asset name and gives the USD converting forex pair
         ie. for GBPAUD it will return AUDUSD"""
@@ -57,7 +58,7 @@ list1 = dict()
 for i in templist:
     list1[i[0]] = pair_generator(i[1])
 
-
+#___________________Creating Account class___________________#
 class Account():
     """Gives real-time details of the account that is currently logged in the MT5 terminal"""
 
@@ -83,7 +84,7 @@ class Account():
         else:
             return 'Live!'
 
-
+#___________________Creating Position class___________________#
 class Position():
     """Returns or calculates various parmeters of an asset that has a single or multiple open positions.
     
@@ -361,7 +362,7 @@ class Position():
                 profit += i.profit
             return profit
 
-
+#_____________________Creating Order class_____________________#
 class Order():
     """Returns or calculates various parameters of a single pending order.
     
