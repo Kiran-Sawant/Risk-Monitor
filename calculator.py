@@ -26,7 +26,7 @@ commodity = ['XAU', 'XPD', 'XPT', 'XNG', 'XTI', 'XBR', 'DXY']                   
 #         'CADJPY': 'USDJPY', 'NZDJPY': 'USDJPY', 'SGDJPY': 'USDJPY', 'NOKJPY': 'USDJPY', 'SEKJPY': 'USDJPY',
 #         'GBPCAD': 'USDCAD', 'EURCAD': 'USDCAD', 'AUDCAD': 'USDCAD', 'NZDCAD': 'USDCAD', 'GBPSGD': 'USDSGD',
 #         'CHFSGD': 'USDSGD', 'EURSGD': 'USDSGD', 'AUDSGD': 'USDSGD', 'GBPNOK': 'USDNOK', 'EURNOK': 'USDNOK',
-#         'GBPSEK': 'GBPSEK', 'EURSEK': 'GBPSEK', 'NOKSEK': 'GBPSEK', 'GBPTRY': 'USDTRY', 'EURTRY': 'USDTRY',
+#         'GBPSEK': 'USDSEK', 'EURSEK': 'USDSEK', 'NOKSEK': 'USDSEK', 'GBPTRY': 'USDTRY', 'EURTRY': 'USDTRY',
 #         'EURZAR': 'USDZAR', 'GBPDKK': 'USDDKK', 'EURDKK': 'USDDKK', 'EURHKD': 'USDHKD', 'EURPLN': 'USDPLN',
 #         'XAUEUR': 'EURUSD', 'XAUAUD': 'AUDUSD', 'XAGEUR': 'EURUSD', 'AUS200': 'AUDUSD', 'UK100': 'GBPUSD',
 #         'JP225': 'USDJPY', 'DE30': 'EURUSD', 'STOXX50': 'EURUSD', 'F40': 'EURUSD', 'ES35': 'EURUSD',
@@ -237,7 +237,7 @@ class Position():
         else:
             return "Null"
 
-    def capital_risk(self, account: Account) -> None:
+    def capital_risk(self, account: Account):
         """Returns the $ amount that will be lost if SL is filled.
         If no SL is placed it returns account equity as entire equity is @ risk.
         Requires an account object for equity"""
@@ -248,12 +248,15 @@ class Position():
             else:
                 type_ = mt5.ORDER_TYPE_SELL
             
-            try:
-                risk = mt5.order_calc_profit(type_, self.asset, self.open_positions[0].volume, self.open_positions[0].price_open, self.open_positions[0].sl)
-            except TypeError:
-                risk = account.equity
-
-            return risk
+            # try:
+            #     risk = mt5.order_calc_profit(type_, self.asset, self.open_positions[0].volume, self.open_positions[0].price_open, self.open_positions[0].sl)
+            # except TypeError:
+            #     risk = account.equity
+            risk = mt5.order_calc_profit(type_, self.asset, self.open_positions[0].volume, self.open_positions[0].price_open, self.open_positions[0].sl)
+            if risk == None:
+                return account.equity
+            else:
+                return risk
 
         else:                                               #For > one trades/asset
             risk = 0
@@ -262,12 +265,16 @@ class Position():
                     orderType = mt5.ORDER_TYPE_BUY
                 else:
                     orderType = mt5.ORDER_TYPE_SELL
-                try:
-                    risk += mt5.order_calc_profit(orderType, self.asset, i.volume, i.price_open, i.sl)
-                except TypeError:
-                    risk = account.equity
+                # try:
+                #     risk += mt5.order_calc_profit(orderType, self.asset, i.volume, i.price_open, i.sl)
+                # except TypeError:
+                #     risk = account.equity
+                risk += mt5.order_calc_profit(orderType, self.asset, i.volume, i.price_open, i.sl)
+                if risk == None:
+                    return account.equity
+                else:
+                    return risk
 
-            return risk
 
     def portfolio_risk(self, account: Account) -> None:
         """Returns capital at risk as a percentage of equity."""
@@ -276,9 +283,9 @@ class Position():
 
         return abs(pRisk)
 
-    def capital_gain(self, account: Account) -> None:
+    def capital_gain(self, account: Account):
         """Returns the $ amount gained if TP is filled.
-        If no TP is set, returns Equity."""
+        If no TP is set, returns account equity."""
 
         if self.trades == 1:                                #For one trades/asset
             if self.open_positions[0].type == 0:            #For long positions
@@ -287,12 +294,15 @@ class Position():
                 orderType = mt5.ORDER_TYPE_SELL
 
             #________Calculating capital gain_________#
-            try:
-                gain = mt5.order_calc_profit(orderType, self.asset, self.open_positions[0].volume, self.open_positions[0].price_open, self.open_positions[0].tp)
-            except TypeError:
-                gain = account.equity
-
-            return gain
+            # try:
+            #     gain = mt5.order_calc_profit(orderType, self.asset, self.open_positions[0].volume, self.open_positions[0].price_open, self.open_positions[0].tp)
+            # except TypeError:
+            #     gain = account.equity
+            gain = mt5.order_calc_profit(orderType, self.asset, self.open_positions[0].volume, self.open_positions[0].price_open, self.open_positions[0].tp)
+            if gain == None:
+                return account.equity
+            else:
+                return gain
 
         else:                                               #For > one trades/asset
             gain = 0
@@ -304,12 +314,15 @@ class Position():
                     orderType = mt5.ORDER_TYPE_SELL
 
                 #________Calculating capital gain_________#
-                try:
-                    gain += mt5.order_calc_profit(orderType, self.asset, i.volume, i.price_open, i.tp)
-                except TypeError:
-                    gain = account.equity
-            
-            return gain
+                # try:
+                #     gain += mt5.order_calc_profit(orderType, self.asset, i.volume, i.price_open, i.tp)
+                # except TypeError:
+                #     gain = account.equity
+                gain += mt5.order_calc_profit(orderType, self.asset, i.volume, i.price_open, i.tp)
+                if gain == None:
+                    return account.equity
+                else:
+                    return gain
 
     def portfolio_gain(self, account: Account) -> None:
         """Returns capital target as a percentage of equity."""
@@ -506,7 +519,8 @@ class Order():
 if __name__ == "__main__":
     j = Account()
 
-    k = Position('AUDJPY')
+    k = Position()               #Insert a position from MT5
+    print("-------Position-------")
     print(f"Asset: {k.asset}")
     print(f"Net Entry Price: {k.entry_price()}")
     print(f"Net Volume: {k.real_volume()}")
@@ -522,13 +536,14 @@ if __name__ == "__main__":
     print(f"Portfolio gain: {k.portfolio_gain(j):.2f}%")
     print(f"Current P/L: {k.profit():.3f}")
     print(f"Swap: {k.swap():.2f}")
-    print(f"Number of open Trades: {k.trades}")
+    print(f"Number of open Trades: {k.trades}\n")
 
-    m = Order(582811936)
+    m = Order()                     #Insert a ticket number from MT5
+    print("-------Pending order-------")
     print(f"Symbol: {m.symbol}")
     print(f"Position: {m.position()}")
     print(f"Volume: {m.real_volume():.0f}")
-    print(f"Exposure: {m.exposure()}")
+    print(f"Exposure: ${m.exposure()}")
     print(f"Leverage: {m.leverage(j):.2f}")
     print(f"Capital @ Risk: ${m.capital_risk(j)}")
     print(f"Capital Target: ${m.capital_target(j)}")
