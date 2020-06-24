@@ -51,7 +51,7 @@ for info in allInfo:
         continue
 
 #__________Assigning spreadsheet_________#
-book = xl.Book('Book1.xlsx')
+book = xl.Book('Risk.xlsx')
 
 positionSheet = book.sheets('Positions')
 orderSheet = book.sheets('Orders')
