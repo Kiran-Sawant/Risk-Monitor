@@ -447,7 +447,7 @@ class Order():
     def leverage(self, account: Account) -> None:
         """Calculates implied leverage on that order"""
 
-        lev = self.exposure() / account.free_margin
+        lev = self.exposure() / account.equity
 
         return lev
 
@@ -532,6 +532,9 @@ class Order():
 #_________Test__________#
 if __name__ == "__main__":
     j = Account()
+    print("-------Account-------")
+    print(f"Free Margin: {j.free_margin:.2f}")
+    print(f"Equity: {j.equity}\n")
 
     k = Position('JPM.NYSE')               #Insert asset name from MT5 as string
     print("-------Position-------")
