@@ -146,7 +146,7 @@ class Position():
             elif self.real_volume() < 0:
                 return "Net Short"
             else:
-                return 'Heged'
+                return 'Hedge'
 
     def entry_price(self):
         """Gives the cumulative entry price for all the positions of an asset."""
