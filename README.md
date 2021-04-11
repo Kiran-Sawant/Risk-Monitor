@@ -31,7 +31,7 @@ I have made a total of 24 trades as shown in MT5 snap. However, <em>Risk-Monitor
 <table>
   <tr>
    <th>Position</th>
-   <td>Your net position. If you buy 10x shares and then sell 30x shortly after, while simultaniously keeping both the trades open, your net position is short, and vice versa. You can take as many long and short trades on an asset and this column will display your net position. If you long and short equal volume displays <b>hedge</b>.
+   <td>Your net position. If you buy 10x shares and then sell 30x shortly after, while simultaniously keeping both the trades open, your net position is short, and vice versa. You can take as many long and short trades on an asset and this column will display your net position.<br>If you go long and short equal volume; displays <b>hedge</b>.
    </td>
   </tr>
   <tr>
