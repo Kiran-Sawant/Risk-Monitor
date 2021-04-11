@@ -103,3 +103,72 @@ I have made a total of 24 trades as shown in MT5 snap. However, <em>Risk-Monitor
 
 ## Orders
 <img src="Snippets/Orders.PNG">
+<br>
+Orders sheet is for pending orders. Main difference in orders is that it does not cummulate the pending orders on same asset, as orders are better managed individually. The Orders table shows the status of various risk-parameters of that order, as explained below.
+<br>
+<table>
+   <tr>
+     <th>Position</th>
+     <td>Direction of trade, long/short</td>
+   </tr>
+   <tr>
+     <th>Asset</th>
+     <td>Symbol of asset as in MT5</td>
+   </tr>
+   <tr>
+     <th>Entry Price</th>
+     <td>Price in original denomination at which the asset is marked to be filled.</td>
+   </tr>
+   <tr>
+     <th>Volume</th>
+     <td>number of base asset to be bought/sold</td>
+   </tr>
+   <tr>
+     <th>Exposure</th>
+     <td>Possible exposure in USD w.r.t current USD conversion rate.</td>
+   </tr>
+   <tr>
+     <th>Leverage</th>
+     <td>Possible leverage w.r.t current USD conversion rate.</td>
+   </tr>
+   <tr>
+     <th>Risk</th>
+     <td>Dollar loss and % loss on account balance if stop-loss hits.</td>
+   </tr>
+   <tr>
+     <th>Target</th>
+     <td>Dollar gain and percent gain on balance if Take profit hits.</td>
+   </tr>
+   <tr>
+     <th>Swap/day</th>
+     <td>The Dollar amount you will pay or receive per day and the same as a percentage of target.<br>If your target is $10 and swap/day is $1(10% of target) you will need to reach your target within 9 days(LoL)</td>
+   </tr>
+   <tr>
+     <th>Required Margin</th>
+     <td>Leveraged trading involves borrowed money that requires you to pay an upfront amount called margin as in margin of error. This column shows you the required margin to fill that order in USD and the same as a percentage of free-margin.</td>
+   </tr>
+   <tr>
+     <th>Expiration</th>
+     <td>In MT5 Pending orders can be made to expire after a certain amount of time. This column shows the date and time of expiration.</td>
+   </tr>
+   <tr>
+     <th>Comment</th>
+     <td>MT5 allows to insert comments on every order for reminder purposes, this column shows the comment.</td>
+   </tr>
+</table>
+
+## Portfolio
+<img src="Snippets/Portfolio.PNG">
+<br>
+The Portfolio sheet mainly shows Account info and Asset class exposure, i.e. cumulative exposure on each asset class.<br>
+Knowing the aasset class exposure is important as some asset classes are more volatile than others, and having a high exposure on them is being reckless. 
+
+## Future Updates (not guarenteed)
+- Support for Crypto Assetclass
+- Dedicated GUI window, getting rid of excel.
+- A differencial column in orders that displays the difference between current price and order entry.
+
+## Note:
+- All the Positions shown in the snippets are YoLo positions. I'm not a trader and I do not trade on financial markets.
+- I do not take responsibility for any financial losses you may incure, test the software in demo before going live.
+- The app is Broker agnostic, as far as i have tested.
