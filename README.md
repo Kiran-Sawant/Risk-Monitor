@@ -22,6 +22,8 @@ Below is an snap of open positions and pending orders as shown in MT5.
 
 <p>I have open positions on various assets, in different asset classes like FX, index futures, stocks, ETFs, commodities and sovereign bond futures. Some of them are in  foreign denominations(assuming USD as account currency) and some have both long & short positions(vix_j1). I have a few pending orders as well.</p>
 <p>The MT5 dashboard above does not show enough information about individual assets, infact, it looks cluttered and makes things more chaotic. risk monitor solves that problem.</p>
+
+## Positions
 <img src="Snippets/Exposure.PNG"><br>
 
 I have made a total of 24 trades as shown in MT5 snap. However, <em>Risk-Monitor</em> boils them down to 13, the number of assets I have position on. The Positions table shows the status of various risk-parameters of that asset, as explained below.
@@ -98,3 +100,6 @@ I have made a total of 24 trades as shown in MT5 snap. However, <em>Risk-Monitor
         </td>
   </tr>
 </table>
+
+## Orders
+<img src="Snippets/Orders.PNG">
