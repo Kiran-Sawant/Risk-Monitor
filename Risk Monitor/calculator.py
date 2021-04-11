@@ -142,7 +142,7 @@ class Position():
             return string
         else:                                      #For > one trade/asset
             if self.real_volume() > 0:
-                return "Net long"
+                return "Net Long"
             elif self.real_volume() < 0:
                 return "Net Short"
             else:
@@ -533,10 +533,10 @@ class Order():
 if __name__ == "__main__":
     j = Account()
 
-    k = Position('JGB10Y_M1')               #Insert asset name from MT5 as string
+    k = Position('JPM.NYSE')               #Insert asset name from MT5 as string
     print("-------Position-------")
     print(f"Asset name: {k.asset}")
-    print(f"Net Entry Price: {k.entry_price()}")
+    print(f"Net Entry Price: {k.entry_price():.2f}")
     print(f"Current Price: {k.current_price}")
     print(f"Net Volume: {k.real_volume()}")
     print(f"Position: {k.position()}")
