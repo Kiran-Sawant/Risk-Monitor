@@ -46,7 +46,7 @@ I have made a total of 24 trades as shown in MT5 snap. However, <em>Risk-Monitor
   </tr>
   <tr>
      <th>volume</th>
-        <td>The cumulative volume on an asset. If you buy 10 and sell 5 @ the same time you are 5 long. Units of base currency in FX.
+        <td>The cumulative volume on an asset. Units of base currency in FX. If you buy 10 and sell 5 @ the same time you are 5 long.
         </td>
   </tr>
   <tr>
@@ -66,7 +66,7 @@ I have made a total of 24 trades as shown in MT5 snap. However, <em>Risk-Monitor
   </tr>
   <tr>
      <th>Risk</th>
-        <td>If you place a stop-loss order, this column shows the dollar amount and the percentage of account balace you will lose if the stop-loss hits. If you haven't placed stop-loss, in theory your entire equity is at risk. Therefore, it displays account equity.
+        <td>If you place a stop-loss order, this column shows the dollar amount and the percentage of account balace you will lose if the stop-loss hits.<br>If you haven't placed stop-loss, in theory your entire equity is at risk. Therefore, it displays account equity.
         </td>
   </tr>
   <tr>
@@ -80,8 +80,8 @@ I have made a total of 24 trades as shown in MT5 snap. However, <em>Risk-Monitor
         </td>
   </tr>
   <tr>
-     <th>appriciation</th>
-        <td>The appriciation of the asset in your favor. For short positions a negative appriciation in asset is positive appriciation for you portfolio. It accounts for position types and shows appriciation accordingly.
+     <th>appreciation</th>
+        <td>The appreciation of the asset in your favor. For short positions a negative appriciation in asset is positive appriciation for you portfolio. It accounts for position types and shows appriciation accordingly.
         </td>
   </tr>
   <tr>
@@ -145,7 +145,7 @@ Orders sheet is for pending orders. Main difference in orders is that it does no
    </tr>
    <tr>
      <th>Required Margin</th>
-     <td>Leveraged trading involves borrowed money that requires you to pay an upfront amount called margin as in margin of error. This column shows you the required margin to fill that order in USD and the same as a percentage of free-margin.</td>
+     <td>Leveraged trading involves borrowed money that requires you to pay an upfront amount called margin as in margin of error. This column shows you the required margin to fill that order in USD, and the same as a percentage of free-margin.<br> It depends on the leverage ratio your broker provides you.</td>
    </tr>
    <tr>
      <th>Expiration</th>
