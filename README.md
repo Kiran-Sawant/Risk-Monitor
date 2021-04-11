@@ -161,7 +161,7 @@ Orders sheet is for pending orders. Main difference in orders is that it does no
 <img src="Snippets/Portfolio.PNG">
 <br>
 The Portfolio sheet mainly shows Account info and Asset class exposure, i.e. cumulative exposure on each asset class.<br>
-Knowing the aasset class exposure is important as some asset classes are more volatile than others, and having a high exposure on them is being reckless. 
+Knowing the asset class exposure is important as some asset classes are more volatile than others, and having a high exposure on them is reckless.
 
 ## Future Updates (not guarenteed)
 - Support for Crypto Assetclass
@@ -172,3 +172,4 @@ Knowing the aasset class exposure is important as some asset classes are more vo
 - All the Positions shown in the snippets are YoLo positions. I'm not a trader and I do not trade on financial markets.
 - I do not take responsibility for any financial losses you may incure, test the software in demo before going live.
 - The app is Broker agnostic, as far as i have tested.
+- This project mainly focuses on MetaTrader5 terminal as it is free to use. However, the algos in calculator.py can be applied on different platforms like Interactive brokers using their Python APIs.
