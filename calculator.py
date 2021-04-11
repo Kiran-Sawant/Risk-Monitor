@@ -4,9 +4,10 @@
     This module uses MetaTrader5 module to retrive data and works only with MetaTrader5"""
 
 #_________Imports________#
-import MetaTrader5 as mt5
 import datetime as dt
 import time
+
+import MetaTrader5 as mt5
 
 print(f"Author: {mt5.__author__}")
 print(f"Module Version: {mt5.__version__}")
@@ -16,9 +17,9 @@ print(f"Module Version: {mt5.__version__}")
     list1 consists of asset names & their Dollar conversion
     required to calculat P/L."""
 
-forex = ['EUR', 'GBP', 'AUD', 'NZD', 'USD', 'CHF', 'CAD', 'SGD', 'NOK', 'SEK']                                    #Required to calculate volume
+forex = ['EUR', 'GBP', 'AUD', 'NZD', 'USD', 'CHF', 'CAD', 'SGD', 'NOK', 'SEK',]                             #Required to calculate volume
 
-commodity = ['XAU', 'XPD', 'XPT', 'XNG', 'XTI', 'XBR', 'DXY']                                                     #Required to calculate volume
+commodity = ['XAU', 'XPD', 'XPT', 'XNG', 'XTI', 'XBR', 'DXY', 'JGB']                                        #Required to calculate volume
 
 # list1 = {'GBPAUD': 'AUDUSD', 'EURAUD': 'AUDUSD', 'AUDNZD': 'NZDUSD', 'GBPNZD': 'NZDUSD', 'EURNZD': 'NZDUSD',
 #         'EURGBP': 'GBPUSD', 'GBPCHF': 'USDCHF', 'EURCHF': 'USDCHF', 'AUDCHF': 'USDCHF', 'CADCHF': 'USDCHF',
@@ -36,15 +37,16 @@ mt5.initialize()             #Connecting to MT5
 print(f"Terminal Build: {mt5.terminal_info().build}\n")
 
 #__________________Creating Denomination Dictionary_____________________#
-def pair_generator(symbol):
-    """Takes the asset name and gives the USD converting forex pair
-        ie. for GBPAUD it will return AUDUSD"""
+def pair_generator(symbol):         # symbol: Profit currency.
+    """Takes the currency symbol and returns the USD converting forex pair,
+        ie. for AUD it will return AUDUSD & USDJPY for JPY, etc."""
 
     if symbol in ['EUR', 'GBP', 'AUD', 'NZD']:
         return f'{symbol}USD'
     else:
         return f'USD{symbol}'
 
+#_______________creating list1(line-24) automatically__________________#
 allinfo = mt5.symbols_get()
 
 templist = list()
@@ -58,7 +60,7 @@ list1 = dict()
 for i in templist:
     list1[i[0]] = pair_generator(i[1])
 
-#___________________Creating Account class___________________#
+#______________________Account class______________________#
 class Account():
     """Gives real-time details of the account that is currently logged in the MT5 terminal"""
 
@@ -84,14 +86,14 @@ class Account():
         else:
             return 'Live!'
 
-#___________________Creating Position class___________________#
+#______________________Position class______________________#
 class Position():
     """Returns or calculates various parmeters of an asset that has a single or multiple open positions.
     
-    Attr:
+    Argument:
         symbol: The symbol of a current open position"""
 
-    def __init__(self, symbol):
+    def __init__(self, symbol: str):
 
         self.open_positions = mt5.positions_get(symbol=symbol)      #Info tuple of open tuples
 
@@ -138,7 +140,7 @@ class Position():
             else:
                 string = 'Net Short'
             return string
-        else:                                       #For > one trade/asset
+        else:                                      #For > one trade/asset
             if self.real_volume() > 0:
                 return "Net long"
             elif self.real_volume() < 0:
@@ -223,10 +225,22 @@ class Position():
         return abs(lev)
             
     def appriciation(self):
-        """Returns appriciation/depriciation of asset value from entry."""
+        """Returns appriciation/depriciation of asset from entry.
+        w.r.t the position ie. Long/Short."""
 
         appr = (self.current_price - self.entry_price())/self.entry_price()
-        return appr
+        
+        if self.position() == 'Net Long':          # appriciation on long positions  
+
+            return appr
+            
+        elif self.position() == 'Net Short':       # appriciation on short positions
+            if appr < 0:
+                return abs(appr)
+            else:
+                return -(appr)
+        else:                                      # appriciation on hedged position
+            return 0
     
     def status(self):
         """"Returns a string indicating the overall status of position; Profitable or Losing."""
@@ -255,7 +269,7 @@ class Position():
             #     risk = account.equity
             risk = mt5.order_calc_profit(type_, self.asset, self.open_positions[0].volume, self.open_positions[0].price_open, self.open_positions[0].sl)
             if risk == None:
-                return account.equity
+                return -(account.equity)
             else:
                 return risk
 
@@ -266,16 +280,15 @@ class Position():
                     orderType = mt5.ORDER_TYPE_BUY
                 else:
                     orderType = mt5.ORDER_TYPE_SELL
-                # try:
-                #     risk += mt5.order_calc_profit(orderType, self.asset, i.volume, i.price_open, i.sl)
-                # except TypeError:
-                #     risk = account.equity
-                risk += mt5.order_calc_profit(orderType, self.asset, i.volume, i.price_open, i.sl)
-                if risk == None:
-                    return account.equity
-                else:
-                    return risk
-
+                try:
+                    risk += mt5.order_calc_profit(orderType, self.asset, i.volume, i.price_open, i.sl)
+                except TypeError:
+                    risk = -(account.equity)
+                # risk += mt5.order_calc_profit(orderType, self.asset, i.volume, i.price_open, i.sl)
+                # if risk == None:
+                #     return account.equity
+                # else:
+                return risk
 
     def portfolio_risk(self, account: Account) -> None:
         """Returns capital at risk as a percentage of equity."""
@@ -315,15 +328,15 @@ class Position():
                     orderType = mt5.ORDER_TYPE_SELL
 
                 #________Calculating capital gain_________#
-                # try:
-                #     gain += mt5.order_calc_profit(orderType, self.asset, i.volume, i.price_open, i.tp)
-                # except TypeError:
-                #     gain = account.equity
-                gain += mt5.order_calc_profit(orderType, self.asset, i.volume, i.price_open, i.tp)
-                if gain == None:
-                    return account.equity
-                else:
-                    return gain
+                try:
+                    gain += mt5.order_calc_profit(orderType, self.asset, i.volume, i.price_open, i.tp)
+                except TypeError:
+                    gain = account.equity
+                # gain += mt5.order_calc_profit(orderType, self.asset, i.volume, i.price_open, i.tp)
+                # if gain == None:
+                #     return account.equity
+                # else: return gain
+                return gain
 
     def portfolio_gain(self, account: Account) -> None:
         """Returns capital target as a percentage of equity."""
@@ -479,7 +492,7 @@ class Order():
             elif self.position() == 'Short':
                 swap_rate = mt5.symbol_info(self.symbol).swap_short
 
-            swapPerDay = ((self.exposure * swap_rate) / 100) / 365
+            swapPerDay = ((self.exposure() * swap_rate) / 100) / 365
             
             return swapPerDay
 
@@ -520,26 +533,27 @@ class Order():
 if __name__ == "__main__":
     j = Account()
 
-    k = Position()               #Insert a position from MT5
+    k = Position('JGB10Y_M1')               #Insert asset name from MT5 as string
     print("-------Position-------")
-    print(f"Asset: {k.asset}")
+    print(f"Asset name: {k.asset}")
     print(f"Net Entry Price: {k.entry_price()}")
+    print(f"Current Price: {k.current_price}")
     print(f"Net Volume: {k.real_volume()}")
-    print(f"Net Position: {k.position()}")
-    print(f'Net real Exposure: {k.real_exposure()} {k.asset[3:6]}')
+    print(f"Position: {k.position()}")
+    print(f'Net real Exposure: {k.real_exposure()}')
     print(f'Net Adjusted Exposure: ${k.adjusted_exposure():.2f}')
     print(f'Leverage: {k.leverage(j):.2f}')
-    print(f"Net Appriciation: {k.appriciation():.2f}%")
+    print(f"Net Appriciation: {k.appriciation() * 100:.2f}%")
     print(f"Status: {k.status()}")
     print(f"Capital @ Risk: ${k.capital_risk(j):.2f}")
-    print(f"Portfolio at Risk: {k.portfolio_risk(j):.2f}%")
+    print(f"Portfolio at Risk: {k.portfolio_risk(j) * 100:.2f}%")
     print(f"Potential gain: ${k.capital_gain(j):.2f}")
-    print(f"Portfolio gain: {k.portfolio_gain(j):.2f}%")
+    print(f"Portfolio gain: {k.portfolio_gain(j) * 100:.2f}%")
     print(f"Current P/L: {k.profit():.3f}")
     print(f"Swap: {k.swap():.2f}")
     print(f"Number of open Trades: {k.trades}\n")
 
-    m = Order()                     #Insert a ticket number from MT5
+    m = Order(117216637)                     #Insert a ticket number from MT5
     print("-------Pending order-------")
     print(f"Symbol: {m.symbol}")
     print(f"Position: {m.position()}")
