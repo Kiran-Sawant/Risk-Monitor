@@ -15,7 +15,7 @@ Risk-Monitor helps mitigate this problem by calculating the net market exposure 
 - <a href="https://www.xlwings.org/">xlwings python module</a>
 
 ## Preview
-The app uses MS Excel as a frontend to display tables for <b>open positions</b>, <b>Pending Orders</b> and <b>Asset class exposure</b> each on their separate sheets.<br>
+The app uses MS Excel as a frontend to display tables for <b>open positions</b>, <b>Pending Orders</b> and <b>Asset class exposure</b> each on their separate sheets and updates their status every 10 seconds. Just launch main.py and it shall open terminal and execl file automatically.<br>
 
 Below is a snap of open positions and pending orders as shown in MT5.
 <img src="Snippets/MT5 desk.PNG"><br>
@@ -172,4 +172,5 @@ Knowing the asset class exposure is important as some asset classes are more vol
 - All the Positions shown in the snippets are YoLo positions. I'm not a trader and I do not trade on financial markets.
 - I do not take responsibility for any financial losses you may incure, test the software in demo before going live.
 - The app is Broker agnostic, as far as i have tested.
+- The app is not intended towards Scalpers, but rather medium to long term traders.
 - This project mainly focuses on MetaTrader5 terminal as it is free to use. However, the algos in calculator.py can be applied on different platforms like Interactive brokers using their Python APIs.
