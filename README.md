@@ -104,8 +104,8 @@ I have made a total of 24 trades as shown in MT5 snap. However, <em>Risk-Monitor
 ## Orders
 <img src="Snippets/Orders.PNG">
 <br>
-Orders sheet is for pending orders. Main difference in orders is that it does not cummulate the pending orders on same asset, as orders are better managed individually. The Orders table shows the status of various risk-parameters of that order, as explained below.
-<br>
+Orders sheet is for pending orders. Main difference in orders is that it does not cummulate the pending orders on same asset, as orders are better managed individually. The Orders table shows the status of various risk-parameters of that order, as explained below.<br>
+
 <table>
    <tr>
      <th>Position</th>
