@@ -19,7 +19,7 @@ def asset_class_exposure(positions: set):
             trade = ca.Position(position)
             class_exposure += trade.adjusted_exposure()
         
-    return class_exposure
+    return abs(class_exposure)
 
 
 #________Making asset class lists________#
