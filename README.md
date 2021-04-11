@@ -17,7 +17,7 @@ Risk-Monitor helps mitigate this problem by calculating the net market exposure 
 ## Preview
 The app uses MS Excel as a frontend to display tables for <b>open positions</b>, <b>Pending Orders</b> and <b>Asset class exposure</b> each on their separate sheets.<br>
 
-Below is an snap of open positions and pending orders as shown in MT5.
+Below is a snap of open positions and pending orders as shown in MT5.
 <img src="Snippets/MT5 desk.PNG"><br>
 
 <p>I have open positions on various assets, in different asset classes like FX, index futures, stocks, ETFs, commodities and sovereign bond futures. Some of them are in  foreign denominations(assuming USD as account currency) and some have both long & short positions(vix_j1). I have a few pending orders as well.</p>
