@@ -5,7 +5,7 @@
 </p>
 
 ## Motivation
-In the retail trading world, nearly 90% of retail traders blow-up their accounts within 3 months. Most of them are naive but even for a well informed trader things can get chaotic as they explore various asset-classes, foreign assets and start building-up positions on these assets.<br>
+In the retail trading world, nearly 90% of retail traders blow-up 90% of their accounts within 90 days. Most of them are naive but even for a well informed trader things can get chaotic as they explore various asset-classes, foreign assets and start building-up positions on these assets. This can lead them to make ill-informed decisions.<br>
 The most important aspect of risk that many traders are unaware of, is the net market exposure on an asset, in their account currency, and therefore do not know their leverage either. <em>Not knowing your leverage on an asset is like not having a speedometer in a sports car;</em> you can drive it as fast as you want but will never know when you'll get in trouble and how much is too much. Things get even worse when you trade assets that are denominated in foreign currencies and you take multiple long/short trades on them. Things get messy and chaotic.<br>
 Risk-Monitor helps mitigate this problem by calculating the net market exposure of an asset on which you have taken a position in a single currency i.e. US Dollar. And therefore the total leverage on that asset. It also calculates several other measures that are important.
 
