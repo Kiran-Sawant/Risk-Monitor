@@ -26,7 +26,7 @@ Below is a snap of open positions and pending orders as shown in MT5.
 ## Positions
 <img src="Snippets/Exposure.PNG"><br>
 
-I have made a total of 24 trades as shown in MT5 snap. However, <em>Risk-Monitor</em> boils them down to 13, the number of assets I have position on. The Positions table shows the status of various risk-parameters of that asset, as explained below.
+I have made a total of 24 trades as shown in MT5 screenshot. However, <em>Risk-Monitor</em> boils them down to 13 net positions, the number of securities I have position on. The Positions table shows the status of various risk-parameters of that asset, as explained below.
 
 <table>
   <tr>
